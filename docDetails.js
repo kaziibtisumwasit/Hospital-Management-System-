@@ -112,13 +112,14 @@ const handleAppointment = () =>{
     const time = document.getElementById("time-container");
     const selected_time = time.options[time.selectedIndex];
     // console.log(selected.value,symptom,selected_time.value);
+    const user_id = localStorage.getItem("user_id")
      const info = {
     appointment_type: selected.value,
     appointment_status: "Pending",
     time : selected_time.value,
     symptom : symptom,
     cancel: false,
-    patient: 1,
+    patient: user_id,
     doctor: param,
   };
 

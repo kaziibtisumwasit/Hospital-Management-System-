@@ -23,7 +23,7 @@
             </div>
 
             <div class="menu-container d-flex gap-3">
-                <li class="menu"></a>>Home</li>
+                <li class="menu"></a>Home</li>
                 <li class="menu">Services</li>
                 <li class="menu">Contact Us</li>
                
@@ -45,34 +45,33 @@
 
 
        <!-- Main  -->
-       <div class="login-container ">
-           
-           <div class="col-md-6">
-               <form onsubmit="handleLogin(event)">
-    <h1 class="title mt-5">Please Login</h1>
+    <div class="all-appointment-container">
 
-    <input id="login-username"
-        type="text"
-        class="input"
-        placeholder="Enter Your Username"
-        required>
-
-    <input id="login-password"
-        type="password"
-        class="input"
-        placeholder="Input Your Password"
-        required>
-
-    <button type="submit" class="submit-btn">Login</button>
-
-    <p>Don't Have Account?
-        <a href="reg.html">Go To Registration Page</a>
-    </p>
-</form>
-    </div>
-    <div class="col-md-6">
-        <img class="w-100" src="./images/undraw_sign-up_qamz.png" alt="">
-    </div>
+        <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Doctor</th>
+      <th scope="col">Specialization</th>
+      <th scope="col">Type</th>
+      <th scope="col">Status</th>
+      <th scope="col">Fees</th>
+      <th scope="col">action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+      <td>@mdo</td>
+      <td>@mdo</td>
+      <td>@mdo</td>
+    </tr>
+    
+  </tbody>
+</table>
 
     </div>
 
@@ -115,6 +114,7 @@
       <!-- Add Script File / app.js -->
     <!-- <script src="app.js"></script> -->
     <script src="userDetails.js"></script>
+    <script src="allAppointment.js"></script>
     <!-- <script src="docDetails.js"></script> -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>

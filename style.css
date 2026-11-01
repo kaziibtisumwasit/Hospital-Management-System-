@@ -147,4 +147,26 @@ footer{
 
 .user-details-container{
     height: 100vh;
+    width: 75%;
+    margin: auto;
 }
+
+
+.user-img{
+    width: 200px;
+    height: 200px;
+    border-radius: 100ps;
+}
+
+.user-all{
+    display: flex;
+    justify-content: center;
+    align-items:center ;
+    gap: 50px;
+}
+.all-appointment-container{
+    width: 90%;
+    height: 100vh;
+    margin: auto;
+}
+

@@ -136,6 +136,21 @@ const handleAppointment = () =>{
     };
 
 
+ const loadPatientId = () => {
+  const user_id = localStorage.getItem("user_id");
+
+  fetch(`https://testing-8az5.onrender.com/patient/list/?user_id=${user_id}`)
+    .then((res) => res.json())
+    .then((data) => {
+      localStorage.setItem("patient_id", data[0].id);
+    });
+};
+
+loadPatientId();
+
+
+
+
 getparams();
 
 loadTime()

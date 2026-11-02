@@ -170,3 +170,23 @@ footer{
     margin: auto;
 }
 
+
+
+.doctor{
+    width: 350px;
+    height: 400px;
+    box-shadow: 4px 4px 8px gray;
+    text-align: center;
+    background-color: gray;
+    color: white;
+    border-radius: 10px;
+}
+
+
+.symptom{
+    width: 50%;
+    padding: 20px;
+    margin: 30px;
+    border: none;
+    border-radius: 10px;
+}

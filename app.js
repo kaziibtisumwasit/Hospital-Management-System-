@@ -42,29 +42,33 @@ const displayService = (services) => {
 
 
 const loadDoctors = (searchVal) => {
-    document.getElementById('doctors').innerHTML = "";
-    document.getElementById('spinner').style.display = "block"
-    console.log(searchVal)
-    fetch(`https://testing-8az5.onrender.com/doctor/list/?search=${searchVal ? searchVal : ""
-        }`)
-        // a ? a : ""   ==>> jodi a te value thake a er value niba a te value na thakle "" empty stirng boshbe 
+    const doctorsContainer = document.getElementById("doctors");
+    const spinner = document.getElementById("spinner");
+    const nodata = document.getElementById("nodata");
+
+    // Exit early if this page doesn't have the doctors container
+    if (!doctorsContainer) return;
+
+    doctorsContainer.innerHTML = "";
+    if (spinner) spinner.style.display = "block";
+
+    fetch(`https://testing-8az5.onrender.com/doctor/list/?search=${searchVal ? searchVal : ""}`)
         .then((res) => res.json())
-        // ( ? ) ====>>> jodi data thake ba true hoi sata ta function e patahbe nahole pathabe na jate error na ashe
         .then((data) => {
-            // console.log(data);
-            if (data.results.length>0){
-                displayDoctors(data?.results);
-                document.getElementById('spinner').style.display = "none"
-                document.getElementById('nodata').style.display="none";
+            if (data?.results?.length > 0) {
+                displayDoctors(data.results);
+                if (spinner) spinner.style.display = "none";
+                if (nodata) nodata.style.display = "none";
+            } else {
+                doctorsContainer.innerHTML = "";
+                if (nodata) nodata.style.display = "block";
+                if (spinner) spinner.style.display = "none";
             }
-            else{
-                document.getElementById('doctors').innerHTML = "";
-                document.getElementById('nodata').style.display="block";
-                document.getElementById('spinner').style.display = "none"
-            }
-            
-        })  
-        .catch((err) => console.log(err))
+        })
+        .catch((err) => {
+            console.log(err);
+            if (spinner) spinner.style.display = "none";
+        });
 };
 
 

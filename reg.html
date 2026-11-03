@@ -3,121 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
-     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-     <link href="https://cdn.jsdelivr.net/npm/swiffy-slider@2.1.0/dist/css/swiffy-slider.css" rel="stylesheet" crossorigin="anonymous">
-
+    <title>Registration - SmartCare</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="login.css">
-
 </head>
 <body>
-    <!-- NavBar -->
-     <nav class="d-flex justify-content-around align-items-center p-4">
-            <div class="logo-container d-flex align-items-center gap-2 ">
-                <a class="text-none" href="index.html"><img style="width: 50px ; height: auto;"  src="./images/logo.png" alt=""></a>
-
-                <h3>SmartCare</h3>
-
+    <header>
+        <nav class="d-flex justify-content-around align-items-center p-3">
+            <div class="logo-container d-flex align-items-center gap-2">
+                <a class="text-none" href="index.html"><img style="width: 48px; height: auto;" src="./images/logo.png" alt="SmartCare"></a>
+                <h3 class="mb-0"><a href="index.html">SmartCare</a></h3>
             </div>
-
-            <div class="menu-container d-flex gap-3">
+            <ul class="menu-container d-flex gap-4 mb-0 ps-0">
                 <li class="menu"><a href="index.html">Home</a></li>
-                <li class="menu">Services</li>
-                <li class="menu">Contact Us</li>
-                <li class="menu">Login</li>
-
-
-                <div class="dropdown">
-  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-    Profile 
-  </a>
-
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-    <li><a class="dropdown-item" href="userDetails.html">Prifile</a></li>
-    <li><a class="dropdown-item" href="allAppointment.html">All Appointment</a></li>
-    <li><a class="dropdown-item" href="#">Logout</a></li>
-  </ul>
-</div>
-
-
-            </div>
+                <li class="menu"><a href="login.html">Login</a></li>
+            </ul>
         </nav>
+    </header>
 
-
-
-       <!-- Main  -->
- 
-    <div class="login-container">
-        
-    <div class="col-md-6 text-center m-auto">
-        <form action="" onsubmit="handleRegistration(event)">
-            <h1 class="title mt-5">Create Your Account</h1>
-            <p class="text-danger p-3 text-center m-auto" id="error"></p>
-        <input id="first_name" type="text" class="input" placeholder="Enter Your First Name" required>
-        <input id="last_name" type="text" class="input" placeholder="Enter Your Last Name" >
-        <input id="username" type="text" class="input" placeholder="Enter Your Username" >
-        <input id="email" type="email" class="input" placeholder="Enter Your Email" required>
-        <input id="password" type="password" class="input" placeholder="Input Your Password" required>
-        <input id="confirm_password" type="password" class="input" placeholder="Confirm Password" required>
-        <!-- <button type="button" onclick="handleRegistration(event)" class="submit-btn">Regristration</button> -->
-         <input type="submit" class="submit-btn" value="Regristration" />
-        <p>Already Have An Account? <a href="login.html">Go To Login Page</a>  </p>
-        </form>
-    </div>
-    <div class="col-md-6">
-        <img class="w-75" src="./images/undraw_join_niai.png" alt="">
-    </div>
-
-    </div>
-
-
-
-<!-- Footer  -->
-    <footer class="p-5">
-       <div class="footer-container w-75 m-auto row p-5">
-         <div class="col-md-6">
-            <p><small>Copyright © Smartcare. All Rights Reserved</small></p>
-            <h5>Follow Us</h5>
-            <div class="icons">
-                <img class="social-icon" src="images/LinkedIn.png" alt="">
-                <img class="social-icon" src="images/YouTube.png" alt="">
-                <img class="social-icon" src="images/LinkedIn.png" alt="">
-            </div>
+    <div class="auth-wrapper">
+        <div class="login-container shadow p-4 p-md-5" style="max-width: 520px;">
+            <h2 class="text-center fw-bold mb-4">Patient Registration</h2>
+            <form onsubmit="handleRegistration(event)">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" id="username" class="form-control" placeholder="Choose a username" required>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="first_name" class="form-label">First Name</label>
+                        <input type="text" id="first_name" class="form-control" placeholder="First name" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="last_name" class="form-label">Last Name</label>
+                        <input type="text" id="last_name" class="form-control" placeholder="Last name" required>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" class="form-control" placeholder="name@example.com" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="At least 8 chars, 1 number & symbol" required>
+                </div>
+                <div class="mb-3">
+                    <label for="confirm_password" class="form-label">Confirm Password</label>
+                    <input type="password" id="confirm_password" class="form-control" placeholder="Re-enter password" required>
+                </div>
+                <p id="error" class="text-danger small"></p>
+                <button type="submit" class="btn btn-primary w-100 py-2">Register</button>
+                <p class="text-center mt-3 mb-0"><small>Already have an account? <a class="text-primary fw-semibold" href="login.html">Login</a></small></p>
+            </form>
         </div>
-        <div class="col-md-3">
-            <h5>Company</h5>
-            <li>About</li>
-            <li>Contact Us</li>
-            <li>Culture</li>
-            <li>Blog</li>
-        </div>
-        <div class="col-md-3">
-            <h5>Company</h5>
-            <li>About</li>
-            <li>Contact Us</li>
-            <li>Culture</li>
-            <li>Blog</li>
-        </div>
-        
-       </div>
+    </div>
 
-    <hr>
-        <p class="text-center mt-3"><small>Copyright © Smartcare. All Rights Reserved</small></p>
-
-    </footer>
-
-      <!-- Add Script File / app.js -->
-    <!-- <script src="app.js"></script> -->
     <script src="auth.js"></script>
-    <!-- <script src="docDetails.js"></script> -->
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-
-<script type="module">
-    import { swiffyslider } from 'https://cdn.jsdelivr.net/npm/swiffy-slider@2.1.0/dist/js/swiffy-slider.js';
-    window.addEventListener('load', () => swiffyslider.init());
-</script>
 </body>
 </html>

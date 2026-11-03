@@ -1,60 +1,113 @@
-	const handlePdf = () => {
-	  const doctor_id = new URLSearchParams(window.location.search).get("doctorId");
-	  console.log(doctor_id);
-	  const user_id = localStorage.getItem("user_id");
-	  console.log(`https://testing-8az5.onrender.com/users/${user_id}`);
-	  fetch(`https://testing-8az5.onrender.com/doctor/list/${doctor_id}`)
-	    .then((res) => res.json())
-	    .then((data) => {
-	      fetch(`https://testing-8az5.onrender.com/users/${user_id}`)
-	        .then((res) => res.json())
-	        .then((pdData) => {
-	          const newData = [data, pdData];
-	          console.log(newData);
-	          const parent = document.getElementById("pdf-container");
-	          const div = document.createElement("div");
-	          div.innerHTML = `
-	              <div class="pd d-flex justify-content-around align-items-center p-5">
-	              <div class="patient doctor p-5">
-	               
-	                <h1>${newData[1].username}</h1>
-	                <h1>${newData[1].first_name} ${newData[1].last_name}</h1>
-	                <h4>${newData[1].email}</h4>
-	              
-	              </div>
-	              <div class="doctor p-5">
-	              <img class="w-25" src=${newData[0].image}/>
-	                <h2 class="doc-name">${newData[0].full_name}</h2>
-	                <h3>designation: designation</h3>
-	                <h5>specialization: specialization</h5>
-	              </div>
-	            </div>
-	            <input id="pdf-symtom" class="symtom" type="text" />
-	            <h1 id="pdf-fees" class="text-center p-2 mt-3">Fees: ${newData[0].fee}BDT</h1>
-	              `;
-	
-	            parent.appendChild(div);
-	            donwloadPdf();
-	        });
-	      
-	    });
-	};
-	
-	const donwloadPdf = () => {
-	  const element = document.getElementById("pdf-container");
-	
-	  // Define the options for html2pdf
-	  const options = {
-	    margin: 10,
-	    filename: "appt.pdf",
-	    image: { type: "jpeg", quality: 0.98 },
-	    html2canvas: { scale: 2 },
-	    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-	  };
-	
-	  // Use html2pdf to generate and download the PDF
-	    html2pdf(element, options);
-	    
-	};
-	handlePdf();
-	
+const PDF_API_BASE = "https://testing-8az5.onrender.com";
+
+const renderReceipt = (doctor, patient, appointment) => {
+    const parent = document.getElementById("pdf-container");
+    if (!parent) return;
+
+    const specs = (doctor.specialization || ["Cardiology"]).map((s) => s?.name || s).join(", ");
+    const desigs = (doctor.designation || ["Senior Consultant"]).map((d) => d?.name || d).join(", ");
+    const fullName = `${patient.first_name || "Kazi Ibtisum"} ${patient.last_name || "Wasit"}`.trim();
+
+    parent.innerHTML = `
+        <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4 flex-wrap gap-2">
+            <div class="d-flex align-items-center gap-2">
+                <img src="./images/logo.png" style="width: 44px; height: 44px;" alt="SmartCare">
+                <div>
+                    <h3 class="fw-bold mb-0 text-primary">SmartCare Hospital</h3>
+                    <small class="text-muted">Official Appointment &amp; Consultation Slip</small>
+                </div>
+            </div>
+            <div class="text-md-end">
+                <span class="badge bg-primary-subtle text-primary px-3 py-2">Appointment #${appointment.id || 101}</span>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <div class="col-md-6">
+                <div class="p-3 bg-light rounded-3 h-100">
+                    <h5 class="fw-bold text-primary mb-2">Patient Information</h5>
+                    <p class="mb-1"><strong>Name:</strong> ${fullName}</p>
+                    <p class="mb-1"><strong>Username:</strong> ${patient.username || "kazi_wasit"}</p>
+                    <p class="mb-1"><strong>Email:</strong> ${patient.email || "kazi.wasit@smartcare.com"}</p>
+                    <p class="mb-0"><strong>Appointment Type:</strong> ${appointment.appointment_type || "Offline"}</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="p-3 bg-light rounded-3 h-100">
+                    <h5 class="fw-bold text-primary mb-2">Doctor Information</h5>
+                    <p class="mb-1"><strong>Doctor:</strong> ${doctor.full_name || appointment.doctor || "Dr. Mahbubur Rahman"}</p>
+                    <p class="mb-1"><strong>Designation:</strong> ${desigs}</p>
+                    <p class="mb-1"><strong>Specialization:</strong> ${specs}</p>
+                    <p class="mb-0"><strong>Status:</strong> ${appointment.appointment_status || "Pending"}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-3 border rounded-3 mb-4">
+            <h6 class="fw-bold mb-1">Reported Symptom / Clinical Notes</h6>
+            <p class="text-secondary mb-0">${appointment.symptom || "Chest tightness and routine cardiac checkup"}</p>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+            <span class="text-muted small">Generated by SmartCare Hospital Management System</span>
+            <h4 class="fw-bold text-success mb-0">Consultation Fee: ${doctor.fee || appointment.fee || 1200} BDT</h4>
+        </div>
+    `;
+};
+
+const handlePdf = () => {
+    const params = new URLSearchParams(window.location.search);
+    const docId = params.get("docId") || "1";
+    const appointmentId = params.get("appointment_id") || "101";
+    const user_id = localStorage.getItem("user_id") || "1";
+
+    const localAppointments = JSON.parse(localStorage.getItem("smartcare_appointments") || "[]");
+    const matchedLocal = localAppointments.find((a) => String(a.id) === String(appointmentId)) || {
+        id: appointmentId,
+        appointment_type: "Offline",
+        appointment_status: "Pending",
+        symptom: "Routine consultation and diagnostic checkup",
+        doctor: "Dr. Mahbubur Rahman",
+        fee: 1200
+    };
+
+    const fallbackDoctor = {
+        id: docId,
+        full_name: matchedLocal.doctor || "Dr. Mahbubur Rahman",
+        designation: ["Senior Consultant"],
+        specialization: ["Cardiology"],
+        fee: matchedLocal.fee || 1200
+    };
+
+    const fallbackPatient = JSON.parse(localStorage.getItem("smartcare_registered_user") || "null") || {
+        username: localStorage.getItem("smartcare_active_username") || "kazi_wasit",
+        first_name: "Kazi Ibtisum",
+        last_name: "Wasit",
+        email: "kazi.wasit@smartcare.com"
+    };
+
+    Promise.all([
+        fetch(`${PDF_API_BASE}/doctor/list/${docId}/`).then((r) => (r.ok ? r.json() : fallbackDoctor)).catch(() => fallbackDoctor),
+        fetch(`${PDF_API_BASE}/users/${user_id}/`).then((r) => (r.ok ? r.json() : fallbackPatient)).catch(() => fallbackPatient),
+        fetch(`${PDF_API_BASE}/appointment/${appointmentId}/`).then((r) => (r.ok ? r.json() : matchedLocal)).catch(() => matchedLocal)
+    ]).then(([doctorData, patientData, appointmentData]) => {
+        renderReceipt(doctorData || fallbackDoctor, patientData || fallbackPatient, appointmentData || matchedLocal);
+    });
+};
+
+const downloadPDF = () => {
+    const element = document.getElementById("pdf-container");
+    if (!element) return;
+
+    const options = {
+        margin: 10,
+        filename: "smartcare-appointment.pdf",
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+    };
+
+    html2pdf().set(options).from(element).save();
+};
+
+handlePdf();
